@@ -47,3 +47,72 @@ router.post('/', validate, (req, res) => {
         .catch(err => console.log(err))
 
 })
+
+// handles api/matches GET request
+// shows all
+
+router.get('/', (req, res) => {
+    Match.find()
+        .then(matches => {
+            res.send(matches)
+        })
+        .catch(err => console.log(err))
+})
+
+// get one by id
+router.get('/:id', (req, res) => {
+    const matchId = req.params.id;
+
+    Match.findById(matchId)
+        .then(match => {
+            res.send(match)
+        })
+        .catch(err => console.log(err))
+})
+
+// UPDATE
+router.put('/:id', validate, (req,res) => {
+    const matchId = req.params.id;
+
+    const errors = validationResult(req)
+
+    if( !errors.isEmpty() ) {
+        return res.status(422).send({ errors: errors.array() })
+    }
+
+    Match.findById(matchId)
+    .then(match => {
+        match.matchNumber = req.body.matchNumber;
+        match.date = req.body.date;
+        match.customer = req.body.customer;
+        match.product = req.body.product;
+        match.base = req.body.base;
+        match.size = req.body.size;
+        match.color1 = req.body.color1;
+        match.color2 = req.body.color2;
+        match.color3 = req.body.color3;
+        match.color4 = req.body.color4;
+        match.color5 = req.body.color5;
+        match.colorJobName = req.body.colorJobName;
+
+        return match.save()
+    })
+    .then(result => {
+        res.send(result)
+    })
+    .catch(err => console.log(err))
+})
+
+
+//  DELETE
+router.delete('/:id', (req, res) => {
+    const matchId = req.params.id
+
+    Match.findByIdAndRemove(matchId)
+        .then(result => {
+            res.send(result)
+        })
+        .catch(err => console.log(err))
+})
+
+module.exports = router
