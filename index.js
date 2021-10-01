@@ -2,7 +2,7 @@ const express = require('express')
 const mongoose = require('mongoose')
 // ------------------------------------------
 
-const matches = require('./routes/spots')
+const matches = require('./routes/matches')
 
 const app = express()
 // ------------------------------------------
@@ -23,9 +23,7 @@ const port = process.env.port || 3000
 
 mongoose.connect(process.env.DB_URL, {
     useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useCreateIndex: true
 }).then(result => {
-    app.listen(port, () => console.log('Server is listening on port ${port}'))
+    app.listen(port, () => console.log(`Server is listening on port ${port}`))
 })
 .catch(err => console.log(err))
